@@ -1,9 +1,8 @@
 package com.java.film.scraper;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,13 +28,28 @@ public class FilmDataScraper implements Scraper{
 	}
 
 	public void scrap() {
-		
+		scrapTitle();
+		scrapActors();
+		scrapCommunityRate();
+		scrapCreator();
+		scrapCuriosities();
+		scrapDescription();
+		scrapFilmPilot();
+		scrapFilmwebRanking();
+		scrapGenres();
+		scrapImages();
+		scrapPoster();
+		scrapType();
+		scrapUserReviews();
+		scrapYear();
 	}
 
 	public void scrapTitle() {
-		String title = "";
-		title = doc.getElementsByClass("inline filmTitle").first().child(0).ownText();
-		film.setTitle(title);
+		Element el;
+		el = doc.getElementsByClass("inline filmTitle").first().child(0);
+		if(el != null)
+			film.setTitle(el.ownText());
+		else film.setTitle("");
 	}
 	
 	public void scrapType() {
@@ -51,67 +65,116 @@ public class FilmDataScraper implements Scraper{
 	}
 	
 	public void scrapPoster() {
-		film.setPoster(doc.getElementsByClass("posterLightbox").select("img").attr("src"));
+		Elements els;
+		els = doc.getElementsByClass("posterLightbox").select("img");
+		if(els != null)
+			film.setPoster(els.attr("src"));
+		else film.setPoster("");
 	}
 	
 	public void scrapFilmPilot() {
-		film.setFilmPilot(doc.getElementsByClass("filmPlot bottom-15").first().child(0).ownText());
+		Element el;
+		el = doc.getElementsByClass("filmPlot bottom-15").first().child(0);
+		if(el != null)
+			film.setFilmPilot(el.ownText());
+		else 
+			film.setFilmPilot("");
 	}
 	
 	public void scrapDescription() {
-		Element element;
-		element = doc.getElementsByClass("pageBox filmMainDescription").first();
-		film.setDescription(element.child(0).ownText().concat(element.select("span").text()));
+		Element el;
+		el = doc.getElementsByClass("pageBox filmMainDescription").first();
+		if(el != null) 
+			film.setDescription(el.child(0).ownText().concat(el.select("span").text()));
+		else
+			film.setDescription("");
 	}
 	
 	public void scrapYear() {
 		String str;
-		str = doc.getElementsByClass("inline filmTitle").first().getElementsByTag("span").first().ownText();
-	}//////
+		Element el;
+		el = doc.getElementsByClass("inline filmTitle")
+				.first().getElementsByTag("span").first();
+		if(el != null) {
+			str = el.ownText();
+			film.setYear(str.substring(1, str.indexOf(')')));
+		} else film.setYear("");
+	}
 	
 	public void scrapFilmwebRanking() {
-		film.setFilmwebRanking(doc.getElementsByClass("worldRanking").first().ownText());
+		Element el = doc.getElementsByClass("worldRanking").first();
+		if(el != null) 
+			film.setFilmwebRanking(el.ownText());
+		 else film.setFilmwebRanking("");
 	}
 	
 	public void scrapCommunityRate() {
-		film.setCommunityRate(doc.getElementsByClass("vertical-align light ratingRateValue")
-				.first().child(0).ownText());
+		String el = doc.getElementsByClass("ratingInfo").text();
+		film.setCommunityRate(el);
+			System.out.println(el);
 	}
 	
 	public void scrapCreator() {
-		film.setCreator(doc.getElementsByClass("filmInfo bottom-15")
-				.first().selectFirst("tr").select("a").eachText());
+		Elements els;
+		els = doc.getElementsByClass("filmInfo bottom-15")
+				.first().selectFirst("tr").select("a");
+		if(els != null)
+			film.setCreator(els.eachText());
+		else 
+			film.setCreator(List.of());
 	}
 	
 	public void scrapImages() {
-		film.setImages(doc.getElementsByClass("film-photos film-gallery-parent")
-		.first().getElementsByClass("zoom-1").eachAttr("data-photo"));
+		Elements els;
+		els = doc.getElementsByClass("film-photos film-gallery-parent")
+				.first().getElementsByClass("zoom-1");
+		if(els != null)
+			film.setImages(els.eachAttr("data-photo"));
+		else
+			film.setImages(List.of());
 	}
 	
 	public void scrapGenres() {
-		film.setGenres(doc.getElementsByClass("filmInfo bottom-15")
-				.first().select("td").last().select("a").eachText());
+		Elements els;
+		els = doc.getElementsByClass("filmInfo bottom-15")
+				.first().select("td").last().select("a");
+		if(els != null)
+			film.setGenres(els.eachText());
+		else
+			film.setGenres(List.of());
 	}
 	
 	public void scrapUserReviews() {
-		film.setUserReviews(doc.getElementsByClass("userReviews")
-				.first().select("[href^=/review]").eachAttr("href"));
+		Element el;
+;
+		el = doc.getElementsByClass("userReviews")
+				.first();
+		if(el!= null)
+			film.setUserReviews(el.select("[href^=/review]").eachAttr("href"));
+		else
+			film.setUserReviews(List.of());
 	}
 	
 	public void scrapCuriosities() {
-		film.setCuriosities(doc.getElementsByClass("sep-space text")
-				.first().getElementsByTag("span").eachText());
+		Elements els;
+		els = doc.getElementsByClass("sep-space text")
+				.first().getElementsByTag("span");
+		if(els != null)
+			film.setCuriosities(els.eachText());
+		else
+			film.setCuriosities(List.of());
 	}
 	
 	public void scrapActors() {
 		Elements elements;
-		List <String> actors = new ArrayList<>();
+		Map <String, String> actors = new HashMap<>();
 		elements = doc.getElementsByClass("filmCast filmCastCast").first().getElementsByTag("tr");
+		if(elements != null) {
 		for (Element el : elements) {
-			actors.add(el.select("span").text());
+			actors.put(el.select("[itemprop = name]").text(), el.select("[itemprop = characterName]").text());
 		}
 		film.setActors(actors);
-	System.out.print(film.getActors());
+		} else film.setActors(Map.of());
 	}
 	
 	public void setFilmURL(String URL) {

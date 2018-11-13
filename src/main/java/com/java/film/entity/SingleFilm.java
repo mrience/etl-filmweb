@@ -18,7 +18,7 @@ public class SingleFilm {
 	private List <String> genres;
 	private List <String> userReviews;
 	private List <String> curiosities;
-	private List <String> actors;
+	private Map <String, String> actors;
 	
 	
 	public SingleFilm() {
@@ -138,11 +138,11 @@ public class SingleFilm {
 		this.curiosities = curiosities;
 	}
 
-	public List <String> getActors() {
+	public Map <String, String> getActors() {
 		return actors;
 	}
 
-	public void setActors(List <String> actors) {
+	public void setActors(Map <String, String> actors) {
 		this.actors = actors;
 	}
 	

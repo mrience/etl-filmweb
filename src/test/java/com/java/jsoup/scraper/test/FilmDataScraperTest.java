@@ -46,7 +46,22 @@ class FilmDataScraperTest {
 	
 	@Test
 	public void testScraper() {
-		
+		scraper.scrap();
+		System.out.print("\n tytuł: " + scraper.getFilm().getTitle());
+		System.out.print("\n rok: " + scraper.getFilm().getYear());
+		System.out.print("\n typ: " + scraper.getFilm().getType());
+		System.out.print("\n url: " + scraper.getFilm().getUrl());
+		System.out.print("\n pilot: " + scraper.getFilm().getFilmPilot());
+		System.out.print("\n opis: " + scraper.getFilm().getDescription());
+		System.out.print("\n ranking: " + scraper.getFilm().getFilmwebRanking());
+		System.out.print("\n plakat: " + scraper.getFilm().getPoster());
+		System.out.print("\n recenzje: " + scraper.getFilm().getUserReviews());
+		System.out.print("\n aktorzy: " + scraper.getFilm().getActors());
+		System.out.print("\n twórcy: " + scraper.getFilm().getCreator());
+		System.out.print("\n ciekawostki: " + scraper.getFilm().getCuriosities());
+		System.out.print("\n gaturnki: " + scraper.getFilm().getGenres());
+		System.out.print("\n zdjęcia: " + scraper.getFilm().getImages());
+		System.out.print("\n ocena widzów: " + scraper.getFilm().getCommunityRate());
 	}
 
 	
@@ -83,7 +98,8 @@ class FilmDataScraperTest {
 	}
 	
 	@Test public void testYear() {
-		
+		scraper.scrapYear();
+		Assertions.assertEquals("2011-2019", scraper.getFilm().getYear() );
 	}
 	
 	@Test
