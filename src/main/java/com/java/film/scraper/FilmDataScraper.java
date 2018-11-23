@@ -1,5 +1,6 @@
 package com.java.film.scraper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,9 +110,12 @@ public class FilmDataScraper implements Scraper{
 	}
 	
 	public void scrapCommunityRate() {
-		String el = doc.getElementsByClass("ratingInfo").text();
-		film.setCommunityRate(el);
-			System.out.println(el);
+		Element el;
+		el = doc.select("[itemprop = ratingValue]").first();
+		if(el != null)
+			film.setCommunityRate(el.text());
+			else
+				film.setCommunityRate("");
 	}
 	
 	public void scrapCreator() {
@@ -145,12 +149,17 @@ public class FilmDataScraper implements Scraper{
 	}
 	
 	public void scrapUserReviews() {
-		Element el;
-;
-		el = doc.getElementsByClass("userReviews")
-				.first();
-		if(el!= null)
-			film.setUserReviews(el.select("[href^=/review]").eachAttr("href"));
+		Elements els;
+		final String PREFIX = "https://www.filmweb.pl";
+		List <String> usrReviews = new ArrayList<>();
+		els = doc.getElementsByClass("userReviews").first().select("p");
+		
+		if(els!= null) {
+			for(String str : els.select("[href^=/review]").eachAttr("href")) {
+				usrReviews.add(PREFIX.concat(str));
+			}
+			film.setUserReviews(usrReviews);
+		}
 		else
 			film.setUserReviews(List.of());
 	}

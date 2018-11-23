@@ -136,6 +136,7 @@ class FilmDataScraperTest {
 	public void testUserReviews() {
 		scraper.scrapUserReviews();
 		Assertions.assertNotNull(scraper.getFilm().getUserReviews());
+		System.out.print(scraper.getFilm().getUserReviews());
 	}
 	
 	@Test

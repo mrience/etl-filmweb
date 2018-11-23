@@ -3,7 +3,13 @@ package com.java.film.entity;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "Films")
 public class SingleFilm {
+	
+	@Id
 	private String title;
 	private String type;
 	private String url;
