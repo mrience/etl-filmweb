@@ -104,7 +104,7 @@ public class SingleFilm {
 		this.communityRate = communityRate;
 	}
 
-	public List getCreator() {
+	public List<String> getCreator() {
 		return creator;
 	}
 
