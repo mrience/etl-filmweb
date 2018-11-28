@@ -2,8 +2,8 @@
 
 etl process of filmweb.pl data
 
-##Technologies: 
+## Technologies: 
 Java/Spring-boot, Jsoup library, MongoDB, Angular
 
-##run
+## run
 mvn spring-boot:run
