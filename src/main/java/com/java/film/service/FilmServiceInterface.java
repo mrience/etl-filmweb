@@ -11,7 +11,7 @@ public interface FilmServiceInterface {
 	public ResponseEntity<Object> doLoad();
 	public ResponseEntity<SingleFilm> doTransform();
 	public ResponseEntity <String> doExtract(String url);
-	public Optional<SingleFilm> getFilmByUrl(String url);
+	public Optional<SingleFilm> getFilmById(String title);
 	public void insertFilm(SingleFilm film);
 	public void updateFilm(SingleFilm film);
 	public void clearRepository();

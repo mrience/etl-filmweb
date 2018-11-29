@@ -32,7 +32,7 @@ public class FilmService implements FilmServiceInterface{
 		ExctractedDocument exDoc = new ExctractedDocument(con);
 		doc = exDoc.getDoc();
 		}catch (IOException e) {
-			return new ResponseEntity<String>("Problem while extracting document", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Problem while extracting document", HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<String>(doc.toString(), HttpStatus.OK);
 	}
@@ -44,27 +44,27 @@ public class FilmService implements FilmServiceInterface{
 	
 	public ResponseEntity<Object> doLoad(){
 		insertFilm(scraper.getFilm());
-		if(filmRepo.existsById(scraper.getFilm().getUrl())) {
-		Object o = filmRepo.findById(scraper.getFilm().getUrl());
+		if(filmRepo.existsById(scraper.getFilm().getTitle())) {
+		Object o = filmRepo.findById(scraper.getFilm().getTitle());
 		return new ResponseEntity<Object>(o, HttpStatus.OK);
 		}else
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		
 	}
 	
-	public Optional<SingleFilm> getFilmByUrl(String url) {
-		return filmRepo.findById(url);
+	public Optional<SingleFilm> getFilmById(String title) {
+		return filmRepo.findById(title);
 	}
 	
 	
 	public void insertFilm(SingleFilm film) {
-		if(filmRepo.existsById(film.getUrl()) == false)
+		if(filmRepo.existsById(film.getTitle()) == false)
 			filmRepo.insert(film);
 	}
 	
 	public void updateFilm(SingleFilm film) {
-		if(filmRepo.existsById(film.getUrl())) {
-			filmRepo.deleteById(film.getUrl());
+		if(filmRepo.existsById(film.getTitle())) {
+			filmRepo.deleteById(film.getTitle());
 			filmRepo.insert(film);
 		}
 	}
