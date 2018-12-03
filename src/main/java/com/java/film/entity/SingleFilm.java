@@ -9,9 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Films")
 public class SingleFilm {
 	
-	@Id
 	private String title;
 	private String type;
+	@Id
 	private String url;
 	private String poster;
 	private String filmPilot;

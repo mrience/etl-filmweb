@@ -2,6 +2,7 @@ package com.java.jsoup.connection.test;
 
 import java.io.IOException;
 
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
