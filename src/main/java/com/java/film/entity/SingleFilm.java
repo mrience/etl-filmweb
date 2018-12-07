@@ -2,6 +2,7 @@ package com.java.film.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -152,4 +153,17 @@ public class SingleFilm {
 		this.actors = actors;
 	}
 	
+	@Override
+	public String toString() {
+		
+		StringBuilder string = new StringBuilder();
+		string.append("title: " + title + "\n" + "type: " + type + "\n" + "url: " + url + "\n" + "year: " + year + "\n"
+		+ "film pilot: " + filmPilot+ "\n" + "poster: " + poster + "\n" + "description: " + description + "\n" 
+				+ "filmweb ranking: " + filmwebRanking + "\n" + "community rate: " + communityRate + "\n"
+				+ "creator: " + this.creator.toString() + "\n" + "actors: " + this.actors +"\n" + "images: " + this.images + "\n"
+				+ "genres: " + this.genres + "\n"+ "user reviews: " + this.userReviews + "\n" + "curiosities: " + this.curiosities);
+		
+		return string.toString();
+		
+	}
 }
