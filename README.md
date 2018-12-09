@@ -3,7 +3,15 @@
 etl process of filmweb.pl data
 
 ## Technologies: 
-Java/Spring-boot, Jsoup library, MongoDB, Angular
+##Java - Spring-boot, Jsoup 
+
+###MongoDB 
+
+###Angular
+
+### Lombok
+https://projectlombok.org/download
+install: java -jar lombok.jar
 
 ## run
 mvn spring-boot:run
