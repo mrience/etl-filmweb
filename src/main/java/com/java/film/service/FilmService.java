@@ -1,20 +1,30 @@
 package com.java.film.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.csvreader.CsvReader;
 import com.java.film.entity.SingleFilm;
 import com.java.film.scraper.FilmDataScraper;
 import com.java.jsoup.connection.ExctractedDocument;
 import com.java.jsoup.connection.JsoupConnector;
+import com.java.mongoDB.CsvGenerator;
 import com.java.mongoDB.FilmRepository;
 
 @Service
@@ -149,6 +159,30 @@ public class FilmService implements FilmServiceInterface {
 		scraper = null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.java.film.service.FilmServiceInterface#exportCSV()
+	 */
+	@Override
+	public ResponseEntity<InputStreamResource> exportCSV() throws IOException{
+		List <SingleFilm> films = filmRepo.findAll();
+		 new CsvGenerator(films).generateCsv();;
+		
+		ClassPathResource csvFile = new ClassPathResource("Films.csv");
+		return new ResponseEntity<>(new InputStreamResource(csvFile.getInputStream()), HttpStatus.OK);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.java.film.service.FilmServiceInterface#exportTxt()
+	 */
+	@Override
+	public ResponseEntity<String> exportTxt(String url){
+		
+		SingleFilm film = filmRepo.findById(url).get();
+		if (film.equals(null))
+			return new ResponseEntity<>("film available", HttpStatus.CONFLICT);
+		else
+			return new ResponseEntity<> (film.toString(), HttpStatus.OK);
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.java.film.service.FilmServiceInterface#getFilmById(java.lang.String)
