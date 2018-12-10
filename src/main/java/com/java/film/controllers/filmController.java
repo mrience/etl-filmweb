@@ -5,13 +5,16 @@ import java.io.IOException;
 
 import org.jsoup.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,16 +23,16 @@ import com.java.film.service.FilmServiceInterface;
 import com.java.jsoup.connection.ExctractedDocument;
 import com.java.jsoup.connection.JsoupConnector;
 
+@RequestMapping("")
 @RestController
 public class filmController {
 	
 	@Autowired
 	FilmServiceInterface service;
 	
-	@GetMapping("/")
-	public String index() {
-		ModelAndView mav = new ModelAndView();
-		return "index";
+	@GetMapping
+	public String index(Model model) {
+		return "index.html";
 	}
 	
 	@PostMapping("/extract")
@@ -62,14 +65,13 @@ public class filmController {
 		return service.cleanRepo();
 	}
 	
-	/*@PostMapping("/exportCSV", produces="text/csv")
-	public File exportCSV() {
-		
-		
+	@PostMapping(value = "/exportCSV", produces="text/csv")
+	public ResponseEntity <InputStreamResource> exportCSV() throws IOException{
+		return service.exportCSV();
 	}
 	
 	@PostMapping("/exportFilmTxt")
-	public File exportFilmTxt() {
-		
-	}*/
+	public ResponseEntity <String> exportFilmTxt(@RequestBody String url) {
+		return service.exportTxt(url);
+	}
 }
