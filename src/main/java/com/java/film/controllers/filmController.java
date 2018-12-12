@@ -55,7 +55,7 @@ public class filmController {
 		return service.updateFilm(url);
 	}
 	
-	@PostMapping
+	@PostMapping("/completeEtlProcess")
 	public ResponseEntity<SingleFilm> completeEtlProcess(@RequestBody String url){
 		return service.completeEtlProcess(url);
 	}
