@@ -1,27 +1,30 @@
 package com.java.mongoDB.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import com.java.film.entity.SingleFilm;
+import com.java.configuration.MongoConfig;
 import com.java.mongoDB.FilmRepository;
 
-class MongodbConnectionTest {
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@ContextConfiguration(classes= {MongoConfig.class})
+public class MongodbConnectionTest{
+	
 	@Autowired
 	FilmRepository repo;
 	
-	@Test
-	void test() {
-		final String TITLE = "Monty Python i Święty Graal";
-		SingleFilm film = new SingleFilm();
-		film.setTitle(TITLE);
-		repo.insert(film);
-		Assertions.assertEquals(repo.findById(TITLE), film, "true");
+	public void init() {
 		
 	}
-
+	
+	@Test
+	public void test() {
+		Assertions.assertNotNull(repo.findAll());
+	}
 }
