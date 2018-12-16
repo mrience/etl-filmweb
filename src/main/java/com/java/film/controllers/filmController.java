@@ -2,6 +2,7 @@ package com.java.film.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.jsoup.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,8 +24,9 @@ import com.java.film.entity.SingleFilm;
 import com.java.film.service.FilmServiceInterface;
 import com.java.jsoup.connection.ExctractedDocument;
 import com.java.jsoup.connection.JsoupConnector;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-@RequestMapping("")
 @RestController
 public class filmController {
 	
@@ -56,6 +59,7 @@ public class filmController {
 	}
 	
 	@PostMapping("/completeEtlProcess")
+	@ResponseBody
 	public ResponseEntity<SingleFilm> completeEtlProcess(@RequestBody String url){
 		return service.completeEtlProcess(url);
 	}
@@ -66,7 +70,8 @@ public class filmController {
 	}
 	
 	@PostMapping(value = "/exportCSV", produces="text/csv")
-	public ResponseEntity <InputStreamResource> exportCSV() throws IOException{
+	@ResponseBody
+	public ResponseEntity <InputStreamResource> exportCSV() throws IOException, NullPointerException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
 		return service.exportCSV();
 	}
 	
@@ -74,4 +79,5 @@ public class filmController {
 	public ResponseEntity <String> exportFilmTxt(@RequestBody String url) {
 		return service.exportTxt(url);
 	}
+	
 }
