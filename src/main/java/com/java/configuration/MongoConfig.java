@@ -1,5 +1,6 @@
 package com.java.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -15,13 +16,13 @@ public class MongoConfig extends AbstractMongoConfiguration{
 		return "etl-filmweb";
 	}
 	
-	@Override
+	@Bean
 	public MongoClient mongoClient() {
 		return new MongoClient("localhost", 27017);
 	}
 	
-	 @Override
-	    protected String getMappingBasePackage() {
-	        return "com.java";
-	    }
+	@Override
+	protected String getMappingBasePackage() {
+		return "com.java";
+	}
 }
