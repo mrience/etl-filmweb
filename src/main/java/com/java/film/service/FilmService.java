@@ -19,20 +19,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.csvreader.CsvReader;
+import com.java.csv.CsvGenerator;
 import com.java.film.entity.SingleFilm;
 import com.java.film.scraper.FilmDataScraper;
 import com.java.jsoup.connection.ExctractedDocument;
 import com.java.jsoup.connection.JsoupConnector;
-import com.java.mongoDB.CsvGenerator;
 import com.java.mongoDB.FilmRepository;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 @Service
 public class FilmService implements FilmServiceInterface {
 	private Document doc;
-	private FilmDataScraper scraper;
 	private SingleFilm film;
 	
+	@Autowired
+	private FilmDataScraper scraper;
 	@Autowired
 	FilmRepository filmRepo;
 	
@@ -68,7 +70,7 @@ public class FilmService implements FilmServiceInterface {
 	 */
 	@Override
 	public void transform() {
-		scraper = new FilmDataScraper(doc);
+		scraper.setDoc(doc);;
 	}
 	
 	/* (non-Javadoc)
@@ -163,11 +165,11 @@ public class FilmService implements FilmServiceInterface {
 	 * @see com.java.film.service.FilmServiceInterface#exportCSV()
 	 */
 	@Override
-	public ResponseEntity<InputStreamResource> exportCSV() throws IOException{
+	public ResponseEntity<InputStreamResource> exportCSV() throws IOException, NullPointerException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
 		List <SingleFilm> films = filmRepo.findAll();
 		 new CsvGenerator(films).generateCsv();;
 		
-		ClassPathResource csvFile = new ClassPathResource("Films.csv");
+		ClassPathResource csvFile = new ClassPathResource("/Users/mateusz/eclipse-workspace/etl-filmweb/src/main/resources/Films.csv");
 		return new ResponseEntity<>(new InputStreamResource(csvFile.getInputStream()), HttpStatus.OK);
 	}
 	
