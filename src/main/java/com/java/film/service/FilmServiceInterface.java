@@ -39,6 +39,6 @@ public interface FilmServiceInterface {
 
 	SingleFilm getFilmById(String title);
 
-	List<SingleFilm> findAll();
+	public ResponseEntity <List> findAll();
 
 }

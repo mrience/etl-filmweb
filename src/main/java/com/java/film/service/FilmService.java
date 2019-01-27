@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 @Service
 public class FilmService implements FilmServiceInterface {
+
 	private Document doc;
 	private SingleFilm film;
 	
@@ -37,6 +39,7 @@ public class FilmService implements FilmServiceInterface {
 	private FilmDataScraper scraper;
 	@Autowired
 	FilmRepository filmRepo;
+
 	
 	/* (non-Javadoc)
 	 * @see com.java.film.service.FilmServiceInterface#extract(java.lang.String)
@@ -47,10 +50,10 @@ public class FilmService implements FilmServiceInterface {
 		Connection con = conn.connect(url);
 		doc = null;
 		try {
-		ExctractedDocument exDoc = new ExctractedDocument(con);
-		doc = exDoc.getDoc();
+			ExctractedDocument exDoc = new ExctractedDocument(con);
+			doc = exDoc.getDoc();
 		}catch (IOException e) {
-		doc = null;
+			e.printStackTrace();
 		}
 	}
 	
@@ -61,8 +64,8 @@ public class FilmService implements FilmServiceInterface {
 	public ResponseEntity<String> extractResponse(String url) {
 		extract(url);
 		if (doc != null)
-		return new ResponseEntity<String>(doc.outerHtml(), HttpStatus.OK);
-		else return new ResponseEntity<String>("emty document", HttpStatus.CONFLICT);
+			return new ResponseEntity<String>(doc.outerHtml(), HttpStatus.OK);
+		else return new ResponseEntity<String>("empty document", HttpStatus.CONFLICT);
 	}
 	
 	/* (non-Javadoc)
@@ -70,7 +73,9 @@ public class FilmService implements FilmServiceInterface {
 	 */
 	@Override
 	public void transform() {
-		scraper.setDoc(doc);;
+		scraper.setDoc(doc);
+		scraper.setFilm();
+		scraper.scrap();
 	}
 	
 	/* (non-Javadoc)
@@ -87,7 +92,7 @@ public class FilmService implements FilmServiceInterface {
 	 */
 	@Override
 	public void load() {
-		if(filmRepo.existsById(scraper.getFilm().getUrl()) == false) {
+		if(!filmRepo.existsById(scraper.getFilm().getUrl())) {
 			insertFilm(scraper.getFilm());
 			film = filmRepo.findById(scraper.getFilm().getUrl()).get();	
 		} else film = null;
@@ -113,8 +118,7 @@ public class FilmService implements FilmServiceInterface {
 	public ResponseEntity<SingleFilm> completeEtlProcess(String url){
 		extract(url);
 		transform();
-		return loadResponse();	
-		
+		return loadResponse();
 	}
 	
 	/* (non-Javadoc)
@@ -151,7 +155,7 @@ public class FilmService implements FilmServiceInterface {
 		}
 		return new ResponseEntity<>(film, HttpStatus.OK);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.java.film.service.FilmServiceInterface#cleanFilmData()
 	 */
@@ -160,15 +164,19 @@ public class FilmService implements FilmServiceInterface {
 		doc = null;
 		scraper = null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.java.film.service.FilmServiceInterface#exportCSV()
 	 */
 	@Override
-	public ResponseEntity<InputStreamResource> exportCSV() throws IOException, NullPointerException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
+	public ResponseEntity<InputStreamResource> exportCSV() throws IOException, NullPointerException{
+
 		List <SingleFilm> films = filmRepo.findAll();
-		 new CsvGenerator(films).generateCsv();;
-		
+		try {
+			new CsvGenerator(films).generateCsv();
+		} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e){
+			e.printStackTrace();
+		}
 		ClassPathResource csvFile = new ClassPathResource("/Users/mateusz/eclipse-workspace/etl-filmweb/src/main/resources/Films.csv");
 		return new ResponseEntity<>(new InputStreamResource(csvFile.getInputStream()), HttpStatus.OK);
 	}
@@ -197,9 +205,9 @@ public class FilmService implements FilmServiceInterface {
 	/* (non-Javadoc)
 	 * @see com.java.film.service.FilmServiceInterface#findAll()
 	 */
-	@Override
-	public List <SingleFilm> findAll(){
-		return filmRepo.findAll();
+    @Override
+	public ResponseEntity <List> findAll(){
+		return new ResponseEntity<>(filmRepo.findAll(), HttpStatus.OK);
 	}
 
 }

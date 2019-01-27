@@ -7,8 +7,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import com.mongodb.MongoClient;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Configuration
-@EnableMongoRepositories
+@EnableMongoRepositories(basePackages = "com.java.mongoDB")
 public class MongoConfig extends AbstractMongoConfiguration{
 
 	@Override
@@ -22,7 +25,9 @@ public class MongoConfig extends AbstractMongoConfiguration{
 	}
 	
 	@Override
-	protected String getMappingBasePackage() {
-		return "com.java";
+	protected Collection <String> getMappingBasePackages() {
+		Collection collection = new ArrayList();
+		collection.add("com.java");
+		return collection;
 	}
 }

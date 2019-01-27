@@ -11,7 +11,9 @@ import org.jsoup.select.Elements;
 
 import com.java.film.entity.FilmFactory;
 import com.java.film.entity.SingleFilm;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FilmDataScraper implements Scraper{
 	private Document doc;
 	private FilmFactory factory = new FilmFactory();
@@ -21,7 +23,6 @@ public class FilmDataScraper implements Scraper{
 	public FilmDataScraper(Document doc) {
 		super();
 		this.doc = doc;
-		film = factory.createFilm();
 	}
 
 	public FilmDataScraper() {
@@ -179,9 +180,9 @@ public class FilmDataScraper implements Scraper{
 		Map <String, String> actors = new HashMap<>();
 		elements = doc.getElementsByClass("filmCast filmCastCast").first().getElementsByTag("tr");
 		if(elements != null) {
-		for (Element el : elements) {
-			actors.put(el.select("[itemprop = name]").text(), el.select("[itemprop = characterName]").text());
-		}
+			for (Element el : elements) {
+				actors.put(el.select("[itemprop = name]").text(), el.select("[itemprop = characterName]").text());
+			}
 		film.setActors(actors);
 		} else film.setActors(Map.of());
 	}
@@ -194,9 +195,9 @@ public class FilmDataScraper implements Scraper{
 		return film;
 	}
 
-	public void setFilm(SingleFilm film) {
-		this.film = film;
-	}
+	public void setFilm(){
+		film = factory.createFilm();
+	};
 
 	public Document getDoc() {
 		return doc;

@@ -10,14 +10,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.java.film.entity.SingleFilm;
@@ -33,13 +26,8 @@ public class filmController {
 	@Autowired
 	FilmServiceInterface service;
 	
-	@GetMapping
-	public String index(Model model) {
-		return "index.html";
-	}
-	
 	@PostMapping("/extract")
-	public ResponseEntity <String> extractSubmit(@RequestBody String url) {
+	public ResponseEntity <String> extractSubmit(@RequestParam String url) {
 		return service.extractResponse(url);
 	}
 	
@@ -54,13 +42,13 @@ public class filmController {
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity <SingleFilm> updateFilm(@RequestBody String url){
+	public ResponseEntity <SingleFilm> updateFilm(@RequestParam String url){
 		return service.updateFilm(url);
 	}
 	
 	@PostMapping("/completeEtlProcess")
 	@ResponseBody
-	public ResponseEntity<SingleFilm> completeEtlProcess(@RequestBody String url){
+	public ResponseEntity<SingleFilm> completeEtlProcess(@RequestParam String url){
 		return service.completeEtlProcess(url);
 	}
 	
@@ -70,14 +58,15 @@ public class filmController {
 	}
 	
 	@PostMapping(value = "/exportCSV", produces="text/csv")
-	@ResponseBody
 	public ResponseEntity <InputStreamResource> exportCSV() throws IOException, NullPointerException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
 		return service.exportCSV();
 	}
 	
 	@PostMapping("/exportFilmTxt")
-	public ResponseEntity <String> exportFilmTxt(@RequestBody String url) {
+	public ResponseEntity <String> exportFilmTxt(@RequestParam String url) {
 		return service.exportTxt(url);
 	}
-	
+
+	@PostMapping("/getAllFilms")
+	public ResponseEntity<List> getAllFilms() { return service.findAll(); }
 }

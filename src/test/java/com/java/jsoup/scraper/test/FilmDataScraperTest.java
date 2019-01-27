@@ -36,6 +36,7 @@ class FilmDataScraperTest {
 	@BeforeEach
 	public void initializeEach() {
 		scraper = new FilmDataScraper(doc);
+		scraper.setFilm();
 		scraper.getFilm().setUrl(FILM_URL);
 	}
 	

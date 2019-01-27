@@ -13,10 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.java.configuration.MongoConfig;
 import com.java.mongoDB.FilmRepository;
 
-@ComponentScan(basePackages = "com.java")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes= {MongoConfig.class})
+@ContextConfiguration(classes  = {MongoConfig.class})
 public class MongodbConnectionTest{
 	
 	@Autowired
@@ -29,5 +28,6 @@ public class MongodbConnectionTest{
 	@Test
 	public void test() {
 		Assertions.assertNotNull(repo.findAll());
+		System.out.println(repo.toString());
 	}
 }
