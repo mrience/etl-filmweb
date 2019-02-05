@@ -9,19 +9,18 @@
 
   <name>etl-filmweb</name>
   <url>http://maven.apache.org</url>
-	<parent>
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-starter-parent</artifactId>
-     <version>2.0.5.RELEASE</version>
-     <relativePath />
- 	</parent>
+  <parent>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-parent</artifactId>
+      <version>2.0.5.RELEASE</version>
+      <relativePath />
+  </parent>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>10</java.version>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <java.version>10</java.version>
   </properties>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/org.junit/junit-bom -->
 	<dependency>
     	<groupId>org.junit.jupiter</groupId>
     	<artifactId>junit-jupiter-api</artifactId>
@@ -33,7 +32,6 @@
     	<artifactId>jsoup</artifactId>
     	<version>1.11.3</version>
 	</dependency>
-	
 	<dependency>
     <groupId>org.junit.platform</groupId>
     	<artifactId>junit-platform-launcher</artifactId>
@@ -63,13 +61,6 @@
    	    <groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-	
-	<dependency>
-    	<groupId>de.flapdoodle.embed</groupId>
-    	<artifactId>de.flapdoodle.embed.mongo</artifactId>
-    	<scope>test</scope>
-	</dependency>
-	
 	<dependency> 
     	<groupId>com.opencsv</groupId> 
     	<artifactId>opencsv</artifactId> 
@@ -82,9 +73,7 @@
         <scope>provided</scope>
     </dependency>
  </dependencies>
-  
-  
-  
+
   
  	<build>
         <plugins>

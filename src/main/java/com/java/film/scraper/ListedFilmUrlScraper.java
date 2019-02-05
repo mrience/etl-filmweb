@@ -24,9 +24,9 @@ public class ListedFilmUrlScraper implements Scraper {
 		elements = doc.getElementsByClass(CLASSNAME);
 		if(elements.isEmpty()) {
 			System.out.println("no elements");
-		}else {
-		element = elements.get(0);
-		filmURL = PREFIX.concat(element.attr("href"));
+		} else {
+			element = elements.get(0);
+			filmURL = PREFIX.concat(element.attr("href"));
 		}
 	}
 

@@ -18,14 +18,13 @@ class ListedFilmUrlScraperTest {
 
 	@Test
 	void urlReturnsProperly() throws IOException {
-
 		Document doc;
-		doc= new ExctractedDocument(new JsoupConnector()
+
+		doc = new ExctractedDocument(new JsoupConnector()
 					.connect(new ConnectionUrlMatcher("Gra o tron")
 					.getUrl())).getDoc();
 		ListedFilmUrlScraper scraper = new ListedFilmUrlScraper(doc);
 		scraper.scrap();
 		Assertions.assertEquals("https://www.filmweb.pl/serial/Gra+o+tron-2011-476848", scraper.getFilmURL());
 	}
-
 }
