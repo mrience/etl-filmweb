@@ -6,8 +6,6 @@ import java.util.Map;
 public class FilmFactory {
 	
 	public SingleFilm createFilm() {
-		SingleFilm singleFilm;
-		singleFilm = new SingleFilm();
-		return singleFilm;
+		return new SingleFilm();
 	}
 }
