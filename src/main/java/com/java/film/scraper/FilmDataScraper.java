@@ -18,7 +18,7 @@ public class FilmDataScraper implements Scraper{
 	private Document doc;
 	private FilmFactory factory = new FilmFactory();
 	private SingleFilm film;
-	private final String SERIAL = "serial", FILM = "film";
+	private final static String SERIAL = "serial", FILM = "film";
 		
 	public FilmDataScraper(Document doc) {
 		super();

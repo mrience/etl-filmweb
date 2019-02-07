@@ -34,6 +34,7 @@ public class FilmService implements FilmServiceInterface {
 
 	private Document doc;
 	private SingleFilm film;
+	private String url;
 	
 	@Autowired
 	private FilmDataScraper scraper;
@@ -46,6 +47,7 @@ public class FilmService implements FilmServiceInterface {
 	 */
 	@Override
 	public void extract(String url) {
+		this.url = url;
 		JsoupConnector conn = new JsoupConnector();
 		Connection con = conn.connect(url);
 		doc = null;
@@ -75,6 +77,7 @@ public class FilmService implements FilmServiceInterface {
 	public void transform() {
 		scraper.setDoc(doc);
 		scraper.setFilm();
+		scraper.getFilm().setUrl(url);
 		scraper.scrap();
 	}
 	
