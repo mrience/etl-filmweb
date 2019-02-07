@@ -236,7 +236,8 @@ public class FilmDataScraper implements Scraper{
 		};
 		if (elements != null) {
             for (Element el : elements) {
-                actors.put(el.select("[itemprop = name]").text(), el.select("[itemprop = characterName]").text());
+                actors.put(el.select("[itemprop = name]").text().replace(".", ""),
+						el.select("[itemprop = characterName]").text());
             }
             film.setActors(actors);
         } else
