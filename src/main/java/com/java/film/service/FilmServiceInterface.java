@@ -33,7 +33,7 @@ public interface FilmServiceInterface {
 
 	void cleanFilmData();
 	
-	public ResponseEntity<InputStreamResource> exportCSV() throws IOException;
+	public ResponseEntity<InputStreamResource> exportCSV();
 	
 	public ResponseEntity<String> exportTxt(String url);
 

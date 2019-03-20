@@ -1,19 +1,12 @@
 package com.java.film.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -40,7 +33,8 @@ public class FilmService implements FilmServiceInterface {
 	private FilmDataScraper scraper;
 	@Autowired
 	FilmRepository filmRepo;
-
+    @Value("${filmService.csvFile}")
+    ClassPathResource csvFile;
 	
 	/* (non-Javadoc)
 	 * @see com.java.film.service.FilmServiceInterface#extract(java.lang.String)
@@ -172,16 +166,21 @@ public class FilmService implements FilmServiceInterface {
 	 * @see com.java.film.service.FilmServiceInterface#exportCSV()
 	 */
 	@Override
-	public ResponseEntity<InputStreamResource> exportCSV() throws IOException, NullPointerException{
-
+	public ResponseEntity<InputStreamResource> exportCSV() {
+        InputStreamResource resource = null;
 		List <SingleFilm> films = filmRepo.findAll();
 		try {
 			new CsvGenerator(films).generateCsv();
-		} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e){
+		} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | NullPointerException e){
 			e.printStackTrace();
 		}
-		ClassPathResource csvFile = new ClassPathResource("/Users/mateusz/eclipse-workspace/etl-filmweb/src/main/resources/Films.csv");
-		return new ResponseEntity<>(new InputStreamResource(csvFile.getInputStream()), HttpStatus.OK);
+
+		try {
+            resource = new InputStreamResource(csvFile.getInputStream());
+        } catch (IOException e) {
+		    e.printStackTrace();
+        }
+        return new ResponseEntity<>(resource, HttpStatus.OK);
 	}
 	
 	/* (non-Javadoc)

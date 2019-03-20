@@ -9,8 +9,8 @@ import org.jsoup.nodes.Element;
 
 public class ListedFilmUrlScraper implements Scraper {
 	Document doc;
-	private final String CLASSNAME = "filmPreview__link";
-	private final String PREFIX = "https://www.filmweb.pl";
+	private static final String CLASSNAME = "filmPreview__link";
+	private static final String PREFIX = "https://www.filmweb.pl";
 	private List <Element> elements = new ArrayList<Element>();
 	private String filmURL;
 	private Element element;

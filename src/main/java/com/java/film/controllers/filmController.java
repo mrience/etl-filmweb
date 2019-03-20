@@ -58,7 +58,7 @@ public class filmController {
 	}
 	
 	@PostMapping(value = "/exportCSV", produces="text/csv")
-	public ResponseEntity <InputStreamResource> exportCSV() throws IOException, NullPointerException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
+	public ResponseEntity <InputStreamResource> exportCSV() {
 		return service.exportCSV();
 	}
 	

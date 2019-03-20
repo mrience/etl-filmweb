@@ -46,7 +46,7 @@ public class FilmDataScraper implements Scraper{
 		scrapYear();
 	}
 
-	public void scrapTitle() {
+	private void scrapTitle() {
 		Element el = null;
 		try {
             el = doc.getElementsByClass("inline filmTitle").first().child(0);
@@ -59,7 +59,7 @@ public class FilmDataScraper implements Scraper{
             film.setTitle("");
     }
 	
-	public void scrapType() {
+	private void scrapType() {
 		if(film.getUrl().contains("serial"))
 			film.setType(SERIAL);
 		else {
@@ -71,7 +71,7 @@ public class FilmDataScraper implements Scraper{
 		}
 	}
 	
-	public void scrapPoster() {
+	private void scrapPoster() {
 		Elements els = null;
 		try {
             els = doc.getElementsByClass("posterLightbox").select("img");
@@ -84,7 +84,7 @@ public class FilmDataScraper implements Scraper{
             film.setPoster("");
     }
 	
-	public void scrapFilmPilot() {
+	private void scrapFilmPilot() {
 		Element el = null;
 		try {
             el = doc.getElementsByClass("filmPlot bottom-15").first().child(0);
@@ -97,7 +97,7 @@ public class FilmDataScraper implements Scraper{
             film.setFilmPilot("");
     }
 	
-	public void scrapDescription() {
+	private void scrapDescription() {
 		Element el = null;
 		try {
             el = doc.getElementsByClass("pageBox filmMainDescription").first();
@@ -110,7 +110,7 @@ public class FilmDataScraper implements Scraper{
             film.setDescription("");
     }
 	
-	public void scrapYear() {
+	private void scrapYear() {
 		String str;
 		Element el = null;
 		try {
@@ -126,7 +126,7 @@ public class FilmDataScraper implements Scraper{
             film.setYear("");
     }
 	
-	public void scrapFilmwebRanking() {
+	private void scrapFilmwebRanking() {
 	    Element el = null;
 	    try {
             el = doc.getElementsByClass("worldRanking").first();
@@ -139,7 +139,7 @@ public class FilmDataScraper implements Scraper{
 		    film.setFilmwebRanking("");
     }
 	
-	public void scrapCommunityRate() {
+	private void scrapCommunityRate() {
 		Element el = null;
 		try {
             el = doc.select("[itemprop = ratingValue]").first();
@@ -152,7 +152,7 @@ public class FilmDataScraper implements Scraper{
             film.setCommunityRate("");
     }
 	
-	public void scrapCreator() {
+	private void scrapCreator() {
 		Elements els = null;
 		try {
             els = doc.getElementsByClass("filmInfo bottom-15")
@@ -166,7 +166,7 @@ public class FilmDataScraper implements Scraper{
             film.setCreator(List.of());
     }
 	
-	public void scrapImages() {
+	private void scrapImages() {
 		Elements els = null;
 		try {
             els = doc.getElementsByClass("film-photos film-gallery-parent")
@@ -180,7 +180,7 @@ public class FilmDataScraper implements Scraper{
 			film.setImages(List.of());
 	}
 	
-	public void scrapGenres() {
+	private void scrapGenres() {
 		Elements els = null;
 		try {
             els = doc.getElementsByClass("filmInfo bottom-15")
@@ -194,7 +194,7 @@ public class FilmDataScraper implements Scraper{
             film.setGenres(List.of());
 	}
 	
-	public void scrapUserReviews() {
+	private void scrapUserReviews() {
 		Elements els = null;
 		final String PREFIX = "https://www.filmweb.pl";
 		List <String> usrReviews = new ArrayList<>();
@@ -212,7 +212,7 @@ public class FilmDataScraper implements Scraper{
             film.setUserReviews(List.of());
     }
 	
-	public void scrapCuriosities() {
+	private void scrapCuriosities() {
 		Elements els = null;
 		try {
             els = doc.getElementsByClass("sep-space text")
@@ -226,7 +226,7 @@ public class FilmDataScraper implements Scraper{
             film.setCuriosities(List.of());
     }
 	
-	public void scrapActors() {
+	private void scrapActors() {
 		Elements elements = null;
 		Map <String, String> actors = new HashMap<>();
 		try {
@@ -244,7 +244,7 @@ public class FilmDataScraper implements Scraper{
             film.setActors(Map.of());
 	}
 	
-	public void setFilmURL(String URL) {
+	private void setFilmURL(String URL) {
 		this.film.setUrl(URL);
 	}
 	
