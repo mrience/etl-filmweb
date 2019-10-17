@@ -1,0 +1,15 @@
+com/java/film/scraper/Scraper.class
+com/java/jsoup/connection/ConnectionUrlMatcher.class
+com/java/film/entity/FilmFactory.class
+com/java/jsoup/connection/JsoupConnector.class
+com/java/configuration/MvcConfig.class
+com/java/film/service/FilmService.class
+com/java/mongoDB/FilmRepository.class
+com/java/film/entity/SingleFilm.class
+com/java/film/scraper/ListedFilmUrlScraper.class
+com/java/film/service/FilmServiceInterface.class
+com/java/csv/CsvGenerator.class
+com/java/configuration/MongoConfig.class
+com/java/jsoup/connection/ExctractedDocument.class
+com/java/film/scraper/FilmDataScraper.class
+com/java/app/App.class

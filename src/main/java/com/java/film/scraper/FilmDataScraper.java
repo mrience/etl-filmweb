@@ -60,7 +60,7 @@ public class FilmDataScraper implements Scraper{
     }
 	
 	private void scrapType() {
-		if(film.getUrl().contains("serial"))
+		if(film.getUrl().contains(SERIAL))
 			film.setType(SERIAL);
 		else {
 			if(film.getUrl().contains(FILM))

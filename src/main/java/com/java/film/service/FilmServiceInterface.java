@@ -11,15 +11,9 @@ import com.java.film.entity.SingleFilm;
 
 public interface FilmServiceInterface {
 
-	void extract(String url);
-
 	ResponseEntity<String> extractResponse(String url);
 
-	void transform();
-
 	ResponseEntity<SingleFilm> transformResponse();
-
-	void load();
 
 	ResponseEntity<SingleFilm> loadResponse();
 

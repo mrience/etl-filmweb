@@ -33,21 +33,15 @@ public class FilmService implements FilmServiceInterface {
 	private FilmDataScraper scraper;
 	@Autowired
 	FilmRepository filmRepo;
+
     @Value("${filmService.csvFile}")
     ClassPathResource csvFile;
-	
-	/* (non-Javadoc)
-	 * @see com.java.film.service.FilmServiceInterface#extract(java.lang.String)
-	 */
-	@Override
-	public void extract(String url) {
+
+	private void extract(String url) {
 		this.url = url;
-		JsoupConnector conn = new JsoupConnector();
-		Connection con = conn.connect(url);
-		doc = null;
+
 		try {
-			ExctractedDocument exDoc = new ExctractedDocument(con);
-			doc = exDoc.getDoc();
+			doc = new ExctractedDocument(new JsoupConnector().connect(url)).getDoc();
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -63,12 +57,8 @@ public class FilmService implements FilmServiceInterface {
 			return new ResponseEntity<String>(doc.outerHtml(), HttpStatus.OK);
 		else return new ResponseEntity<String>("empty document", HttpStatus.CONFLICT);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.java.film.service.FilmServiceInterface#transform()
-	 */
-	@Override
-	public void transform() {
+
+	private void transform() {
 		scraper.setDoc(doc);
 		scraper.setFilm();
 		scraper.getFilm().setUrl(url);
@@ -83,12 +73,8 @@ public class FilmService implements FilmServiceInterface {
 		transform();
 		return new ResponseEntity<SingleFilm>(scraper.getFilm(), HttpStatus.OK);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.java.film.service.FilmServiceInterface#load()
-	 */
-	@Override
-	public void load() {
+
+	private void load() {
 		if(!filmRepo.existsById(scraper.getFilm().getUrl())) {
 			insertFilm(scraper.getFilm());
 			film = filmRepo.findById(scraper.getFilm().getUrl()).get();	

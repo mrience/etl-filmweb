@@ -1,0 +1,5 @@
+com/java/jsoup/connection/test/JsoupConnectionTest.class
+com/java/mongoDB/test/MongodbConnectionTest.class
+com/java/jsoup/scraper/test/ListedFilmUrlScraperTest.class
+com/java/jsoup/connection/test/ConnectionUrlTest.class
+com/java/jsoup/scraper/test/FilmDataScraperTest.class
